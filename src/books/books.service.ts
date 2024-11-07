@@ -54,7 +54,20 @@ export class BooksService {
   }
 
   update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+    const index = this.books.findIndex(book => book.id == id);
+
+    if (index == -1) {
+      return undefined;
+    }
+
+    const newBook = {
+      ...this.books[index],
+      ...updateBookDto,
+    }
+
+    this.books[index] = newBook;
+
+    return newBook;
   }
 
   remove(id: number) {
