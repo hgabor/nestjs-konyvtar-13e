@@ -34,11 +34,12 @@ export class BooksController {
     }
     return book;
   }
+  
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: string) {
-    if (!this.booksService.remove(+id)) {
+  async remove(@Param('id') id: string) {
+    if (!await this.booksService.remove(+id)) {
       throw new NotFoundException('No book with this id');
     }
   }

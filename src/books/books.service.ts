@@ -3,8 +3,21 @@ import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { Book } from './entities/book.entity';
 
+// Get the client
+import * as mysql from 'mysql2/promise';
+
 @Injectable()
 export class BooksService {
+  mysql: mysql.Pool;
+
+  constructor() {
+    this.mysql = mysql.createPool({
+      host: 'localhost',
+      user: 'root',
+      database: 'konyvtar'
+    })
+  }
+
   books: Book[] = [
     {
       id: 1,
@@ -14,7 +27,7 @@ export class BooksService {
       publishYear: 1988,
       reserved: true,
     },
-        {
+    {
       id: 2,
       author: 'A.A. Milne',
       title: 'Winnie the Pooh 2 - The Sequel',
@@ -45,8 +58,9 @@ export class BooksService {
     return newBook;
   }
 
-  findAll() {
-    return this.books;
+  async findAll() {
+    const [results] = await this.mysql.query('SELECT * FROM books');
+    return results;
   }
 
   findOne(id: number) {
@@ -70,14 +84,12 @@ export class BooksService {
     return newBook;
   }
 
-  remove(id: number) {
-    const index = this.books.findIndex(book => book.id == id);
+  async remove(id: number) {
+    const [ results ] = await this.mysql.query(
+      'DELETE FROM books WHERE id = ?',
+      [ id ]
+    );
 
-    if (index == -1) {
-      return false;
-    }
-
-    this.books.splice(index, 1);
-    return true;
+    return (results as mysql.ResultSetHeader).affectedRows == 1;
   }
 }
