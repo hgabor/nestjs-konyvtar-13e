@@ -34,7 +34,15 @@ export class BooksService {
   nextId = 5;
 
   create(createBookDto: CreateBookDto) {
-    return 'This action adds a new book';
+    const newBook = {
+      ...createBookDto,
+      id: this.nextId,
+      reserved: false,
+    };
+    this.books.push(newBook);
+    this.nextId++;
+
+    return newBook;
   }
 
   findAll() {
