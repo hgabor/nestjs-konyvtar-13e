@@ -50,6 +50,13 @@ export class BooksService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} book`;
+    const index = this.books.findIndex(book => book.id == id);
+
+    if (index == -1) {
+      return false;
+    }
+
+    this.books.splice(index, 1);
+    return true;
   }
 }
