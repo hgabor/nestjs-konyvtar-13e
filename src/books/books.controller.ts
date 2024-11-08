@@ -18,8 +18,8 @@ export class BooksController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    const book = this.booksService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const book = await this.booksService.findOne(+id);
     if (!book) {
       throw new NotFoundException('No book with this id');
     }
@@ -27,8 +27,8 @@ export class BooksController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
-    const book = this.booksService.update(+id, updateBookDto);
+  async update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
+    const book = await this.booksService.update(+id, updateBookDto);
     if (!book) {
       throw new NotFoundException('No book with this id');
     }

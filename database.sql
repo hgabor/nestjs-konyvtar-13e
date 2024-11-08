@@ -6,4 +6,3 @@ CREATE TABLE books (
   publishYear NUMERIC(4) NOT NULL,
   reserved BOOLEAN NOT NULL DEFAULT FALSE
 );
-
